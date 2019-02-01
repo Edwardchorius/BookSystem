@@ -11,10 +11,10 @@ namespace BookSystem.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder.HasMany(book => book.Comments)
-                .WithOne(comment => comment.Book)
-                .HasForeignKey(book => book.BookId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(book => book.Reviews)
+                .WithOne(review => review.Book)
+               .HasForeignKey(book => book.BookId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

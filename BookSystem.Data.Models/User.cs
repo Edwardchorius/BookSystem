@@ -30,6 +30,8 @@ namespace BookSystem.Data.Models
 
         public ICollection<Comment> Comments { get; set; }
 
+        public ICollection<Review> Reviews { get; set; }
+
         public ICollection<UsersBooks> UsersBooks { get; set; }
     }
 }

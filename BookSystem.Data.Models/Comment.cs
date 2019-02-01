@@ -8,6 +8,7 @@ namespace BookSystem.Data.Models
 {
     public class Comment : IAuditable, IDeletable
     {
+        [Key]
         public int Id { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -24,16 +25,22 @@ namespace BookSystem.Data.Models
         [Required]
         public string Content { get; set; }
 
-        public int Likes { get; set; }
-
+        [Required]
         public string AuthorId { get; set; }
 
         [Required]
         public User Author { get; set; }
-        
+
+        [Required]
         public int BookId { get; set; }
 
         [Required]
         public Book Book { get; set; }
+
+        [Required]
+        public int ReviewId { get; set; }
+
+        [Required]
+        public Review Review { get; set; }
     }
 }

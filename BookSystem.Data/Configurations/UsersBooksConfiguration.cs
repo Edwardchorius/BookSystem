@@ -11,7 +11,15 @@ namespace BookSystem.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<UsersBooks> builder)
         {
-            builder.HasKey(ub => new { ub.BookId, ub.UserId });
+            builder.HasKey(ub => new { ub.UserId, ub.BookId });
+
+            builder.HasOne<User>(ub => ub.User)
+                .WithMany(u => u.UsersBooks)
+                .HasForeignKey(ub => ub.UserId);
+
+            builder.HasOne<Book>(ub => ub.Book)
+                .WithMany(b => b.UsersBooks)
+                .HasForeignKey(ub => ub.BookId);
         }
     }
 }

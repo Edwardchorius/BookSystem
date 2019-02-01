@@ -16,6 +16,8 @@ namespace BookSystem.Data
 
         }
 
+        public DbSet<Review> Reviews { get; set; }
+
         public DbSet<Book> Books { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
@@ -24,10 +26,10 @@ namespace BookSystem.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new UsersBooksConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new CommentConfiguration());
+            builder.ApplyConfiguration(new UsersBooksConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
+
 
             base.OnModelCreating(builder);
         }

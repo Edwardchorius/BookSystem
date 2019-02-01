@@ -15,6 +15,11 @@ namespace BookSystem.Data.Configurations
                 .WithOne(comment => comment.Author)
                 .HasForeignKey(user => user.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.Reviews)
+                .WithOne(review => review.Author)
+                .HasForeignKey(user => user.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

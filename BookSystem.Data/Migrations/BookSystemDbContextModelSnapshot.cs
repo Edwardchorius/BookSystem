@@ -27,6 +27,8 @@ namespace BookSystem.Data.Migrations
 
                     b.Property<string>("Genre");
 
+                    b.Property<int>("Likes");
+
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
@@ -54,9 +56,9 @@ namespace BookSystem.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<int>("Likes");
-
                     b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<int>("ReviewId");
 
                     b.HasKey("Id");
 
@@ -64,7 +66,33 @@ namespace BookSystem.Data.Migrations
 
                     b.HasIndex("BookId");
 
+                    b.HasIndex("ReviewId");
+
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("BookSystem.Data.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired();
+
+                    b.Property<int>("BookId");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<string>("ReviewText");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("BookSystem.Data.Models.User", b =>
@@ -136,15 +164,13 @@ namespace BookSystem.Data.Migrations
 
             modelBuilder.Entity("BookSystem.Data.Models.UsersBooks", b =>
                 {
+                    b.Property<string>("UserId");
+
                     b.Property<int>("BookId");
 
-                    b.Property<int>("UserId");
+                    b.HasKey("UserId", "BookId");
 
-                    b.Property<string>("UserId1");
-
-                    b.HasKey("BookId", "UserId");
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("BookId");
 
                     b.ToTable("UsersBooks");
                 });
@@ -264,10 +290,28 @@ namespace BookSystem.Data.Migrations
                     b.HasOne("BookSystem.Data.Models.User", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BookSystem.Data.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookSystem.Data.Models.Review", "Review")
                         .WithMany("Comments")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BookSystem.Data.Models.Review", b =>
+                {
+                    b.HasOne("BookSystem.Data.Models.User", "Author")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookSystem.Data.Models.Book", "Book")
+                        .WithMany("Reviews")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -281,7 +325,8 @@ namespace BookSystem.Data.Migrations
 
                     b.HasOne("BookSystem.Data.Models.User", "User")
                         .WithMany("UsersBooks")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
