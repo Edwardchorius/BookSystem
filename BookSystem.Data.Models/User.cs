@@ -28,8 +28,6 @@ namespace BookSystem.Data.Models
         [MaxLength(50, ErrorMessage = "LastName cannot be more than 50 characters")]
         public string LastName { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
-
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<UsersBooks> UsersBooks { get; set; }

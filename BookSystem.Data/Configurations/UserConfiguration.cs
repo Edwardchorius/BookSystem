@@ -11,11 +11,6 @@ namespace BookSystem.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasMany(user => user.Comments)
-                .WithOne(comment => comment.Author)
-                .HasForeignKey(user => user.AuthorId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasMany(user => user.Reviews)
                 .WithOne(review => review.Author)
                 .HasForeignKey(user => user.AuthorId)

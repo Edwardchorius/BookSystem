@@ -29,6 +29,7 @@ namespace BookSystem.Data
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new UsersBooksConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
+            builder.ApplyConfiguration(new ReviewConfiguration());
 
 
             base.OnModelCreating(builder);

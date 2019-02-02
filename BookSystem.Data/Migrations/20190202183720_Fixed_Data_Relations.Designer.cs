@@ -4,14 +4,16 @@ using BookSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookSystem.Data.Migrations
 {
     [DbContext(typeof(BookSystemDbContext))]
-    partial class BookSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190202183720_Fixed_Data_Relations")]
+    partial class Fixed_Data_Relations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
