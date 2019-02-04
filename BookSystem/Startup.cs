@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BookSystem.Data;
 using BookSystem.Models;
 using BookSystem.Services;
+using BookSystem.Data.Models;
 
 namespace BookSystem
 {
@@ -29,12 +30,9 @@ namespace BookSystem
             services.AddDbContext<BookSystemDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<BookSystemDbContext>()
                 .AddDefaultTokenProviders();
-
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }

@@ -32,12 +32,6 @@ namespace BookSystem.Data.Models
         public User Author { get; set; }
 
         [Required]
-        public int BookId { get; set; }
-
-        [Required]
-        public Book Book { get; set; }
-
-        [Required]
         public int ReviewId { get; set; }
 
         [Required]
