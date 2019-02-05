@@ -1,6 +1,7 @@
 ﻿using BookSystem.Data;
 using BookSystem.Data.Models;
 using BookSystem.ServiceLayer.Data.Contracts;
+using BookSystem.ServiceLayer.Data.Exceptions;
 using BookSystem.ServiceLayer.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,30 +44,12 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 UsersBooks = new List<UsersBooks>()
             };
 
-            book = new Book
-            {
-                Title = "randomTitle2",
-                Genre = "randomGenre2",
-                UsersBooks = new List<UsersBooks>()
-            };
-
-            usersBooks = new UsersBooks
-            {
-                User = user,
-                Book = book
-            };
-
-            var usersBooksList = new List<UsersBooks>();
-            usersBooksList.Add(usersBooks);
-
             userServiceMock = new Mock<IUserService>();
-            userServiceMock.Setup(usm => usm.GetUserBooks(username)).ReturnsAsync(usersBooksList);
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
-                await actContext.UsersBooks.AddAsync(usersBooks);
                 await actContext.SaveChangesAsync();
             }
 
@@ -82,6 +65,93 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             }
         }
 
+        [TestMethod]
+        public async Task ThrowException_When_BookAlreadyAdded()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<BookSystemDbContext>()
+                .UseInMemoryDatabase(databaseName: "ThrowException_When_BookAlreadyAdded")
+                .Options;
 
+            user = new User
+            {
+                Id = userId,
+                UserName = username,
+                FirstName = firstName,
+                LastName = lastName,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            book = new Book
+            {
+                Title = title,
+                Genre = genre,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = book
+            };
+
+            var userBooksList = new List<UsersBooks>();
+            userBooksList.Add(usersBooks);
+
+            userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(usm => usm.GetUserBooks(username)).ReturnsAsync(userBooksList);
+
+            //Act
+            using (var actContext = new BookSystemDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.UsersBooks.AddAsync(usersBooks);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new BookSystemDbContext(contextOptions))
+            {
+                var bookService = new BookService(assertContext, userServiceMock.Object);
+                await Assert.ThrowsExceptionAsync<BookAlreadyAddedException>(async () => await bookService.AddBook(user, title, genre));
+            }
+        }
+
+        [TestMethod]
+        public async Task CheckIf_ReturnedBookIs_AddedInTheBase()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<BookSystemDbContext>()
+                .UseInMemoryDatabase(databaseName: "CheckIf_ReturnedBookIs_AddedInTheBase")
+                .Options;
+
+            user = new User
+            {
+                Id = userId,
+                UserName = username,
+                FirstName = firstName,
+                LastName = lastName,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            userServiceMock = new Mock<IUserService>();
+
+            //Act
+            using (var actContext = new BookSystemDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new BookSystemDbContext(contextOptions))
+            {
+                var bookService = new BookService(assertContext, userServiceMock.Object);
+                Book bookResult = await bookService.AddBook(user, title, genre);
+                var bookInBase = await assertContext.UsersBooks.Where(ub => ub.Book == bookResult).Select(b => b.Book).FirstOrDefaultAsync();
+
+                Assert.AreSame(bookResult, bookInBase);
+            }
+        }
     }
 }
