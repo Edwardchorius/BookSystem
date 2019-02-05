@@ -113,7 +113,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             using (var assertContext = new BookSystemDbContext(contextOptions))
             {
                 var bookService = new BookService(assertContext, userServiceMock.Object);
-                await Assert.ThrowsExceptionAsync<BookAlreadyAddedException>(async () => await bookService.AddBook(user, title, genre));
+                await Assert.ThrowsExceptionAsync<EntityAlreadyExistsException>(async () => await bookService.AddBook(user, title, genre));
             }
         }
 
