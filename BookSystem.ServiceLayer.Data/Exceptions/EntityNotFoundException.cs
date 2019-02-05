@@ -4,9 +4,9 @@ using System.Text;
 
 namespace BookSystem.ServiceLayer.Data.Exceptions
 {
-    public class BookAlreadyAddedException : Exception
+    public class EntityNotFoundException : Exception
     {
-        public BookAlreadyAddedException(string message, Exception ex = null) : base(message, ex)
+        public EntityNotFoundException(string message, Exception ex = null) : base(message, ex)
         {
 
         }

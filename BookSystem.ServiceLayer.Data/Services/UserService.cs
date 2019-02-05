@@ -37,7 +37,7 @@ namespace BookSystem.ServiceLayer.Data.Services
             }
             catch (Exception ex)
             {
-                throw new CouldNotRetrieveUserBooksException("Could not retrieve the current user's books", ex);
+                throw new EntityNotFoundException("Could not retrieve the current user's books", ex);
             }
         }
     }

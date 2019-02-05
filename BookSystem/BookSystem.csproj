@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookSystem.Data\BookSystem.Data.csproj" />
+    <ProjectReference Include="..\BookSystem.ServiceLayer.Data\BookSystem.ServiceLayer.Data.csproj" />
   </ItemGroup>
 
 </Project>

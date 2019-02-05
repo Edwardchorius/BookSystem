@@ -29,7 +29,7 @@ namespace BookSystem.ServiceLayer.Data.Services
 
             if (userBooks.Select(b => b.Book).Any(b => b.Title == title))
             {
-                throw new BookAlreadyAddedException("Book already added by the current user");
+                throw new EntityAlreadyExistsException("Book already added by the current user");
             }
 
             Book bookToAdd = new Book

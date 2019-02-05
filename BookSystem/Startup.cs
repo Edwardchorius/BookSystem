@@ -12,6 +12,7 @@ using BookSystem.Data;
 using BookSystem.Models;
 using BookSystem.Services;
 using BookSystem.Data.Models;
+using BookSystem.Extensions;
 
 namespace BookSystem
 {
@@ -50,6 +51,8 @@ namespace BookSystem
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseNotFoundExceptionHandler();
 
             app.UseStaticFiles();
 
