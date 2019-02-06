@@ -20,18 +20,11 @@ namespace BookSystem.ServiceLayer.Data.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<UsersBooks>> GetUserBooks(string username)
+        public async Task<IEnumerable<UsersBooks>> GetUserBooks(User user)
         {
             try
             {
-                var user = await _context.Users.FindAsync(username);
-
-                if (user == null)
-                {
-                    throw new UserNotFoundException("Current user was not found");
-                }
-
-                var userBooks = await _context.UsersBooks.Include(b => b.Book).Where(u => u.User.UserName == username).ToListAsync();
+                var userBooks = await _context.UsersBooks.Include(b => b.Book).Where(u => u.User == user).ToListAsync();
 
                 return userBooks;
             }

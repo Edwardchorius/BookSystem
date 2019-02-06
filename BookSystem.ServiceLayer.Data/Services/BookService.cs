@@ -25,7 +25,7 @@ namespace BookSystem.ServiceLayer.Data.Services
         {
             var userId = user.Id;
 
-            var userBooks = await _userService.GetUserBooks(user.UserName);
+            var userBooks = await _userService.GetUserBooks(user);
 
             if (userBooks.Select(b => b.Book).Any(b => b.Title == title))
             {

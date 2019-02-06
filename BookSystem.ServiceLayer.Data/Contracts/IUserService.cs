@@ -8,6 +8,6 @@ namespace BookSystem.ServiceLayer.Data.Contracts
 {
     public interface IUserService
     {
-        Task<IEnumerable<UsersBooks>> GetUserBooks(string username);
+        Task<IEnumerable<UsersBooks>> GetUserBooks(User user);
     }
 }

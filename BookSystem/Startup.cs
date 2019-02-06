@@ -13,6 +13,8 @@ using BookSystem.Models;
 using BookSystem.Services;
 using BookSystem.Data.Models;
 using BookSystem.Extensions;
+using BookSystem.ServiceLayer.Data.Contracts;
+using BookSystem.ServiceLayer.Data.Services;
 
 namespace BookSystem
 {
@@ -36,6 +38,14 @@ namespace BookSystem
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            this.RegisterServices(services);
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
