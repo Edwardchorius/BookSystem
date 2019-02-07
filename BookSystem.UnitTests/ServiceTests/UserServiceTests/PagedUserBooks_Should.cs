@@ -28,7 +28,7 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
         private string genre = "randomGenre";
         private string username = "randomUserName";
         private DateTime addedOn = DateTime.Now;
-        private string sortOrder = "genre_desc";
+        private string sortOrder = "date_desc";
         private string currentFilter = "random";
         private string searchString = "Genre";
 
@@ -87,6 +87,159 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
                 var pageList = sut.PagedUserBooks(user, sortOrder, currentFilter, searchString, 1);
 
                 Assert.IsInstanceOfType(pageList, typeof(IQueryable<Book>));
+            }
+        }
+
+        [TestMethod]
+        public async Task ReturnQueryableOfBooks_WhenPassed_ConcreteGenreParams_InSearchString()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<BookSystemDbContext>()
+            .UseInMemoryDatabase(databaseName: "ReturnQueryableOfBooks_WhenPassed_ConcreteGenreParams_InSearchString")
+                .Options;
+
+            user = new User
+            {
+                Id = userId,
+                UserName = username,
+                FirstName = firstName,
+                LastName = lastName,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            book = new Book
+            {
+                Title = title,
+                Genre = genre,
+                UsersBooks = new List<UsersBooks>(),
+                CreatedOn = addedOn
+            };
+
+            Book book2 = new Book
+            {
+                Title = "2" + title,
+                Genre = "2" + genre,
+                UsersBooks = new List<UsersBooks>(),
+                CreatedOn = addedOn
+            };
+
+            usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = book
+            };
+
+            var usersBooks2 = new UsersBooks
+            {
+                User = user,
+                Book = book2
+            };
+
+            var userBooksList = new List<UsersBooks>();
+            userBooksList.Add(usersBooks);
+            userBooksList.Add(usersBooks2);
+
+            var bookList = new List<Book>();
+            bookList.Add(book);
+            bookList.Add(book2);
+
+            userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(usm => usm.GetUserBooks(user)).Returns(bookList.AsQueryable());
+
+            //Act
+            using (var actContext = new BookSystemDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.UsersBooks.AddAsync(usersBooks);
+                await actContext.UsersBooks.AddAsync(usersBooks2);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new BookSystemDbContext(contextOptions))
+            {
+                var sut = new UserService(assertContext);
+                var pagedList = sut.PagedUserBooks(user, sortOrder, currentFilter, "2"+ genre, 1);
+
+                Assert.IsInstanceOfType(pagedList, typeof(IQueryable<Book>));
+                Assert.IsTrue(pagedList.Count() == 1);
+            }
+        }
+
+        [TestMethod]
+        public async Task ReturnQueryableOfBooks_WhenPassed_ConcreteSortParams_DateDesc()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<BookSystemDbContext>()
+            .UseInMemoryDatabase(databaseName: "ReturnQueryableOfBooks_WhenPassed_ConcreteSortParams_DateDesc")
+                .Options;
+
+            user = new User
+            {
+                Id = userId,
+                UserName = username,
+                FirstName = firstName,
+                LastName = lastName,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            book = new Book
+            {
+                Title = title,
+                Genre = genre,
+                UsersBooks = new List<UsersBooks>(),
+                CreatedOn = addedOn
+            };
+
+            Book book2 = new Book
+            {
+                Title = "2" + title,
+                Genre = "2" + genre,
+                UsersBooks = new List<UsersBooks>(),
+                CreatedOn = addedOn.AddHours(5)
+            };
+
+            usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = book
+            };
+
+            var usersBooks2 = new UsersBooks
+            {
+                User = user,
+                Book = book2
+            };
+
+            var userBooksList = new List<UsersBooks>();
+            userBooksList.Add(usersBooks);
+            userBooksList.Add(usersBooks2);
+
+            var bookList = new List<Book>();
+            bookList.Add(book);
+            bookList.Add(book2);
+
+            userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(usm => usm.GetUserBooks(user)).Returns(bookList.AsQueryable());
+
+            //Act
+            using (var actContext = new BookSystemDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.UsersBooks.AddAsync(usersBooks);
+                await actContext.UsersBooks.AddAsync(usersBooks2);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new BookSystemDbContext(contextOptions))
+            {
+                var sut = new UserService(assertContext);
+                var pagedList = sut.PagedUserBooks(user, sortOrder, currentFilter, searchString, 1);
+
+                Assert.IsInstanceOfType(pagedList, typeof(IQueryable<Book>));
+                Assert.IsTrue(pagedList.Select(b => b.CreatedOn).FirstOrDefault() == book2.CreatedOn);
+                Assert.IsTrue(pagedList.Count() == 2);
             }
         }
     }
