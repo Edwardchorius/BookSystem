@@ -21,9 +21,9 @@ namespace BookSystem.ServiceLayer.Data.Services
 
         public IQueryable<Book> GetUserBooks(User user)
         {
-            var userBooks =  from b in _context.UsersBooks
-                            .Include(b => b.Book)
-                            .Where(u => u.User == user)
+            var userBooks = from b in _context.UsersBooks
+                           .Include(b => b.Book)
+                           .Where(u => u.User == user)
                             select b.Book;
 
             return userBooks;
