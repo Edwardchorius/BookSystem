@@ -25,7 +25,7 @@ namespace BookSystem.ServiceLayer.Data.Services
         {
             var userId = user.Id;
 
-            var userBooks = await _userService.GetUserBooks(user);
+            var userBooks = await _userService.GetUsersBooks(user);
 
             if (userBooks.Select(b => b.Book).Any(b => b.Title == title))
             {
@@ -38,7 +38,8 @@ namespace BookSystem.ServiceLayer.Data.Services
                 Genre = genre,
                 Likes = likes,
                 Reviews = new List<Review>(),
-                UsersBooks = new List<UsersBooks>()
+                UsersBooks = new List<UsersBooks>(),
+                CreatedOn = DateTime.Now
             };
 
             var usersBooks = new UsersBooks { Book = bookToAdd, User = user };

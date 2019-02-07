@@ -18,5 +18,7 @@ namespace BookSystem.Models.BookViewModels
 
         [Required]
         public string Genre { get; set; }
+
+        public DateTime DateAdded { get; set; }
     }
 }

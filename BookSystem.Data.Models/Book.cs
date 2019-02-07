@@ -1,12 +1,24 @@
-﻿using System;
+﻿using BookSystem.Data.Models.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace BookSystem.Data.Models
 {
-    public class Book
+    public class Book : IAuditable, IDeletable
     {
+        [DataType(DataType.DateTime)]
+        public DateTime? CreatedOn { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? DeletedOn { get; set; }
+
+        public bool IsDeleted { get; set; }
+
         [Key]
         public int Id { get; set; }
 

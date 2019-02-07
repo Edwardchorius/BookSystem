@@ -99,7 +99,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             userBooksList.Add(usersBooks);
 
             userServiceMock = new Mock<IUserService>();
-            userServiceMock.Setup(usm => usm.GetUserBooks(username)).ReturnsAsync(userBooksList);
+            userServiceMock.Setup(usm => usm.GetUsersBooks(user)).ReturnsAsync(userBooksList);
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
