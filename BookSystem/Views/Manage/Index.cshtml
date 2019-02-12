@@ -57,6 +57,19 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
+<div>
+    @if (Model.Count < 1)
+    {
+
+    }
+    else
+    {
+    <p>
+        Page: @(Model.PageIndex)of @Model.TotalPages
+    </p>
+    }
+</div>
+
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-page="@(Model.PageIndex - 1)"

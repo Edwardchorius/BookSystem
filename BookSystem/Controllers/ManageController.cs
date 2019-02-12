@@ -55,7 +55,7 @@ namespace BookSystem.Controllers
             var userBooks = _userService.PagedUserBooks(user, sortOrder, currentFilter, searchString, page);
             
             
-            return View(await PaginatedList<Book>.CreateAsync(userBooks, page ?? 1, 3));
+            return View(await PaginatedList<Book>.CreateAsync(userBooks, page ?? 1, 5));
         }
 
     #region Helpers
