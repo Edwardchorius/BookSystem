@@ -16,7 +16,6 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
     public class AddBook_Should
     {
         private DbContextOptions<BookSystemDbContext> contextOptions;
-        private Mock<IUserService> userServiceMock;
         private UsersBooks usersBooks;
         private User user;
         private Book book;
@@ -44,7 +43,6 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 UsersBooks = new List<UsersBooks>()
             };
 
-            userServiceMock = new Mock<IUserService>();
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
@@ -56,7 +54,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             //Assert
             using (var assertContext = new BookSystemDbContext(contextOptions))
             {
-                var sut = new BookService(assertContext, userServiceMock.Object);
+                var sut = new BookService(assertContext);
                 Book bookResult = await sut.AddBook(user, title, genre);
                 Assert.IsInstanceOfType(bookResult, typeof(Book));
                 Assert.IsTrue(bookResult.Title == title);
@@ -98,8 +96,65 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             var userBooksList = new List<UsersBooks>();
             userBooksList.Add(usersBooks);
 
-            userServiceMock = new Mock<IUserService>();
-            userServiceMock.Setup(usm => usm.GetUsersBooks(user)).ReturnsAsync(userBooksList);
+            //Act
+            using (var actContext = new BookSystemDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.UsersBooks.AddAsync(usersBooks);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new BookSystemDbContext(contextOptions))
+            {
+                var bookService = new BookService(assertContext);
+                await Assert.ThrowsExceptionAsync<EntityAlreadyExistsException>(async () => await bookService.AddBook(user, title, genre));
+            }
+        }
+
+        [TestMethod]
+        public async Task ThrowException_When_FailToRetrieveUser()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<BookSystemDbContext>()
+                .UseInMemoryDatabase(databaseName: "ThrowException_When_FailToRetrieveUser")
+                .Options;
+
+            user = new User
+            {
+                Id = userId,
+                UserName = username,
+                FirstName = firstName,
+                LastName = lastName,
+                UsersBooks = new List<UsersBooks>(),
+                UsersBooksLikes = new List<UsersBooksLikes>()
+            };
+
+            var userForException = new User
+            {
+                Id = userId + "2",
+                UserName = username + "2",
+                FirstName = firstName + "2",
+                LastName = lastName + "2",
+                UsersBooks = new List<UsersBooks>(),
+                UsersBooksLikes = new List<UsersBooksLikes>()
+            };
+
+            book = new Book
+            {
+                Title = title,
+                Genre = genre,
+                UsersBooks = new List<UsersBooks>()
+            };
+
+            usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = book
+            };
+
+            var userBooksList = new List<UsersBooks>();
+            userBooksList.Add(usersBooks);
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
@@ -112,8 +167,8 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             //Assert
             using (var assertContext = new BookSystemDbContext(contextOptions))
             {
-                var bookService = new BookService(assertContext, userServiceMock.Object);
-                await Assert.ThrowsExceptionAsync<EntityAlreadyExistsException>(async () => await bookService.AddBook(user, title, genre));
+                var bookService = new BookService(assertContext);
+                await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await bookService.AddBook(userForException, title, genre));
             }
         }
 
@@ -134,7 +189,6 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 UsersBooks = new List<UsersBooks>()
             };
 
-            userServiceMock = new Mock<IUserService>();
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
@@ -146,7 +200,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
             //Assert
             using (var assertContext = new BookSystemDbContext(contextOptions))
             {
-                var bookService = new BookService(assertContext, userServiceMock.Object);
+                var bookService = new BookService(assertContext);
                 Book bookResult = await bookService.AddBook(user, title, genre);
                 var bookInBase = await assertContext.UsersBooks.Where(ub => ub.Book == bookResult).Select(b => b.Book).FirstOrDefaultAsync();
 

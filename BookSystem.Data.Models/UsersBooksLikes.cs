@@ -2,7 +2,7 @@
 
 namespace BookSystem.Data.Models
 {
-    public class UsersBooks
+    public class UsersBooksLikes
     {
         public string UserId { get; set; }
 

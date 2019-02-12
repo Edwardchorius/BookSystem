@@ -31,5 +31,7 @@ namespace BookSystem.Data.Models
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<UsersBooks> UsersBooks { get; set; }
+
+        public ICollection<UsersBooksLikes> UsersBooksLikes { get; set; }
     }
 }

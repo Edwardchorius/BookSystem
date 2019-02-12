@@ -24,12 +24,15 @@ namespace BookSystem.Data
 
         public DbSet<UsersBooks> UsersBooks { get; set; }
 
+        public DbSet<UsersBooksLikes> UsersBooksLikes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new UsersBooksConfiguration());
             builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new ReviewConfiguration());
+            builder.ApplyConfiguration(new UsersBooksLikesConfiguration());
 
 
             base.OnModelCreating(builder);

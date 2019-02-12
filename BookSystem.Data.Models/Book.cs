@@ -26,10 +26,10 @@ namespace BookSystem.Data.Models
 
         public string Genre { get; set; }
 
-        public int Likes { get; set; }
-
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<UsersBooks> UsersBooks { get; set; }
+
+        public ICollection<UsersBooksLikes> UsersBooksLikes { get; set; }
     }
 }

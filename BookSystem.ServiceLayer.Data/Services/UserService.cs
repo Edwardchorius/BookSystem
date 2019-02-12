@@ -29,20 +29,6 @@ namespace BookSystem.ServiceLayer.Data.Services
             return userBooks;
         }
 
-        public async Task<IEnumerable<UsersBooks>> GetUsersBooks(User user)
-        {
-            try
-            {
-                var userBooks = await _context.UsersBooks.Include(b => b.Book).Where(u => u.User == user).ToListAsync();
-
-                return userBooks;
-            }
-            catch (Exception ex)
-            {
-                throw new EntityNotFoundException("Could not retrieve the current user's books", ex);
-            }
-        }
-
         public IQueryable<Book> PagedUserBooks(User user,
             string sortOrder, string currentFilter, string searchString, int? page = 1)
         {

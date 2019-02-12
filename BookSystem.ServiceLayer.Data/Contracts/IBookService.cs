@@ -8,6 +8,6 @@ namespace BookSystem.ServiceLayer.Data.Contracts
 {
     public interface IBookService
     {
-        Task<Book> AddBook(User user, string title, string genre, int likes = 0);
+        Task<Book> AddBook(User user, string title, string genre);
     }
 }

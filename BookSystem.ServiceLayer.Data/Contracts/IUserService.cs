@@ -12,8 +12,6 @@ namespace BookSystem.ServiceLayer.Data.Contracts
     {
         IQueryable<Book> GetUserBooks(User user);
 
-        Task<IEnumerable<UsersBooks>> GetUsersBooks(User user);
-
         IQueryable<Book> PagedUserBooks(User user, string sortOrder, string currentFilter, string searchString, int? page = 1);
     }
 }
