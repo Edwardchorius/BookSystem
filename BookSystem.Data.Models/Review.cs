@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BookSystem.Data.Models
 {
@@ -22,10 +21,14 @@ namespace BookSystem.Data.Models
         [Required]
         public Book Book { get; set; }
 
+        [Required]
         public string ReviewText { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+        
+        public Dictionary<User, int> Ratings { get; set; }
 
+        [Required]
         [DataType(DataType.DateTime)]
         public DateTime? CreatedOn { get; set; }
     }

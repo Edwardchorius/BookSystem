@@ -4,14 +4,16 @@ using BookSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookSystem.Data.Migrations
 {
     [DbContext(typeof(BookSystemDbContext))]
-    partial class BookSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190213113903_Added_Rating_Property_For_Review_AsDictionary_WithConfiguration")]
+    partial class Added_Rating_Property_For_Review_AsDictionary_WithConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
