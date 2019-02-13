@@ -57,9 +57,6 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
                 Book = book
             };
 
-            var userBooksList = new List<UsersBooks>();
-            userBooksList.Add(usersBooks);
-
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
             {

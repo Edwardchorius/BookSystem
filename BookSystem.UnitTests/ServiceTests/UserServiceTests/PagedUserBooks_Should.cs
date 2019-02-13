@@ -64,10 +64,8 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
                 Book = book
             };
 
-            var userBooksList = new List<UsersBooks>();
             var bookList = new List<Book>();
             bookList.Add(book);
-            userBooksList.Add(usersBooks);
 
             userServiceMock = new Mock<IUserService>();
             userServiceMock.Setup(usm => usm.GetUserBooks(user)).Returns(bookList.AsQueryable());
@@ -134,10 +132,6 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
                 User = user,
                 Book = book2
             };
-
-            var userBooksList = new List<UsersBooks>();
-            userBooksList.Add(usersBooks);
-            userBooksList.Add(usersBooks2);
 
             var bookList = new List<Book>();
             bookList.Add(book);
@@ -210,10 +204,6 @@ namespace BookSystem.UnitTests.ServiceTests.UserServiceTests
                 User = user,
                 Book = book2
             };
-
-            var userBooksList = new List<UsersBooks>();
-            userBooksList.Add(usersBooks);
-            userBooksList.Add(usersBooks2);
 
             var bookList = new List<Book>();
             bookList.Add(book);
