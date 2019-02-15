@@ -23,7 +23,7 @@ namespace BookSystem.ServiceLayer.Data.Services
         public async Task<Book> GetById(User author, int id)
         {
             var book = await _context.UsersBooks
-                .Where(b => b.BookId == id && b.User == author)
+                .Where(b => b.BookId == id && b.User.Id == author.Id)
                 .Select(b => b.Book)
                 .FirstOrDefaultAsync();
 
