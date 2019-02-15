@@ -14,11 +14,13 @@ namespace BookSystem.Models.BookViewModels
         }
 
         [Required]
+        [MinLength(5), MaxLength(30)]
+        [DataType(DataType.Text)]
         public string Title { get; set; }
 
         [Required]
+        [MinLength(5), MaxLength(30)]
+        [DataType(DataType.Text)]
         public string Genre { get; set; }
-
-        public DateTime DateAdded { get; set; }
     }
 }

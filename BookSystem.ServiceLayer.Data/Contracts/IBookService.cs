@@ -9,5 +9,7 @@ namespace BookSystem.ServiceLayer.Data.Contracts
     public interface IBookService
     {
         Task<Book> AddBook(User user, string title, string genre);
+
+        Task<Book> GetById(User author, int bookId);
     }
 }

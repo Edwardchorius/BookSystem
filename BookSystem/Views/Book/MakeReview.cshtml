@@ -1,0 +1,15 @@
+﻿@model MakeReviewViewModel
+
+@{
+    
+}
+
+<h2>Make Review on @Model.Book.Title</h2>
+
+<form asp-controller="Book" asp-action="MakeReview" asp-route-id="@Model.Book.Id" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <textarea name="content" class="form-control" rows="5"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Submit Your Review!</button>
+</form>

@@ -1,5 +1,7 @@
 ﻿@using BookSystem.Extensions
-@model PaginatedList<BookSystem.Data.Models.Book>
+@model PaginatedList<Book>
+
+
 
 @{
     ViewData["Title"] = "Index";
@@ -12,7 +14,7 @@
         <p>
             Search by keyword/s: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
             <input type="submit" value="Search" class="btn btn-default" />
-            <a asp-action="Index">View whole collection</a>
+            <a asp-action="Index">Reset Collection</a>
         </p>
     </div>
 </form>
@@ -34,7 +36,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>
+    <tbody>        
         @foreach (var item in Model)
         {
             <tr>
@@ -46,6 +48,9 @@
                 </td>
                 <td>
                     @item.CreatedOn
+                </td>
+                <td>
+                    <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id"  class="btn btn-success">Add Review</a>                    
                 </td>
             </tr>
         }

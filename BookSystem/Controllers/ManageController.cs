@@ -53,14 +53,14 @@ namespace BookSystem.Controllers
             ViewData["CurrentFilter"] = searchString;
 
             var userBooks = _userService.PagedUserBooks(user, sortOrder, currentFilter, searchString, page);
-            
-            
-            return View(await PaginatedList<Book>.CreateAsync(userBooks, page ?? 1, 5));
+            var result = await PaginatedList<Book>.CreateAsync(userBooks, page ?? 1, 5);
+
+            return View(result);
         }
 
-    #region Helpers
+        #region Helpers
 
-    private void AddErrors(IdentityResult result)
+        private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
             {

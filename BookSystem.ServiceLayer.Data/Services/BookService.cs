@@ -20,6 +20,21 @@ namespace BookSystem.ServiceLayer.Data.Services
             _context = context;
         }
 
+        public async Task<Book> GetById(User author, int id)
+        {
+            var book = await _context.UsersBooks
+                .Where(b => b.BookId == id && b.User == author)
+                .Select(b => b.Book)
+                .FirstOrDefaultAsync();
+
+            if (book == null)
+            {
+                throw new EntityNotFoundException("Could not retrieve book with current ID");
+            }
+
+            return book;
+        }
+
         public async Task<Book> AddBook(User user, string title, string genre)
         {
             try

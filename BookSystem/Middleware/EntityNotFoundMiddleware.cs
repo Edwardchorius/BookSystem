@@ -47,6 +47,14 @@ namespace BookSystem.Middleware
             {
                 context.Response.Redirect("/404");
             }
+            catch (NullReferenceException)
+            {
+                context.Response.Redirect("/404");
+            }
+            catch (Exception)
+            {
+                context.Response.Redirect("/404");
+            }
         }
     }
 }
