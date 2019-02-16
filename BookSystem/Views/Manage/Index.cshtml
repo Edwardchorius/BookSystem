@@ -36,7 +36,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>        
+    <tbody>
         @foreach (var item in Model)
         {
             <tr>
@@ -50,10 +50,13 @@
                     @item.CreatedOn
                 </td>
                 <td>
-                    <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id"  class="btn btn-success">Add Review</a>                    
+                    <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id" class="btn btn-success">Add Review</a>
+                </td>
+                <td>
+                    <a asp-controller="Book" asp-action="LikeBook" asp-route-bookId="@item.Id" id="like-button" class="btn btn-success">Like Book</a>                    
                 </td>
             </tr>
-        }
+        }       
     </tbody>
 </table>
 
@@ -69,9 +72,9 @@
     }
     else
     {
-    <p>
-        Page: @(Model.PageIndex)of @Model.TotalPages
-    </p>
+        <p>
+            Page: @(Model.PageIndex)of @Model.TotalPages
+        </p>
     }
 </div>
 
@@ -89,3 +92,7 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
+
+@section Scripts{
+    <script src="~/js/likebook.js"></script>
+}

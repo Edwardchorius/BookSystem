@@ -10,6 +10,8 @@ namespace BookSystem.ServiceLayer.Data.Contracts
     {
         Task<Book> AddBook(User user, string title, string genre);
 
-        Task<Book> GetById(User author, int bookId);
+        Task<Book> GetById(User user, int bookId);
+
+        Task<UsersBooksLikes> LikeBook(int bookId, User user);
     }
 }

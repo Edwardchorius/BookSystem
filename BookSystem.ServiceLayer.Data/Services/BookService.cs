@@ -20,10 +20,10 @@ namespace BookSystem.ServiceLayer.Data.Services
             _context = context;
         }
 
-        public async Task<Book> GetById(User author, int id)
+        public async Task<Book> GetById(User user, int id)
         {
             var book = await _context.UsersBooks
-                .Where(b => b.BookId == id && b.User.Id == author.Id)
+                .Where(b => b.BookId == id && b.User.Id == user.Id)
                 .Select(b => b.Book)
                 .FirstOrDefaultAsync();
 
@@ -82,6 +82,29 @@ namespace BookSystem.ServiceLayer.Data.Services
             {
                 throw new EntityAlreadyExistsException("Book already added by the current user", ex);
             }
+        }
+
+        public async Task<UsersBooksLikes> LikeBook(int bookId, User user)
+        {
+
+            var userId = user.Id;
+            var userBook = await _context.UsersBooks.Where(ub => ub.BookId == bookId && ub.User == user).FirstOrDefaultAsync();
+
+            if (bookId == 0 || user == null || userBook == null)
+            {
+                throw new EntityNotFoundException("Could not retrieve current book/user");
+            }
+
+            var likedBook = new UsersBooksLikes
+            {
+                BookId = bookId,
+                UserId = userId
+            };
+
+            await _context.UsersBooksLikes.AddAsync(likedBook);
+            await _context.SaveChangesAsync();
+
+            return likedBook;
         }
     }
 }
