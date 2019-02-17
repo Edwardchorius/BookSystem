@@ -106,16 +106,29 @@ namespace BookSystem.ServiceLayer.Data.Services
                 throw new EntityAlreadyExistsException("User has already liked this book");
             }
 
-            var likedBook = new UsersBooksLikes
+
+            if (doesExist == null)
             {
-                BookId = bookId,
-                UserId = userId
-            };
+                var likedBook = new UsersBooksLikes
+                {
+                    BookId = bookId,
+                    UserId = userId
+                };
 
-            await _context.UsersBooksLikes.AddAsync(likedBook);
-            await _context.SaveChangesAsync();
+                await _context.UsersBooksLikes.AddAsync(likedBook);
+                await _context.SaveChangesAsync();
 
-            return likedBook;
+                return likedBook;
+            }
+
+            else 
+            {
+                doesExist.IsDeleted = false;
+                _context.UsersBooksLikes.Update(doesExist);
+                await _context.SaveChangesAsync();
+
+                return doesExist;
+            }
         }
 
         public async Task<UsersBooksLikes> DislikeBook(int bookId, User user)
