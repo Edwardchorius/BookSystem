@@ -10,6 +10,8 @@ namespace BookSystem.ServiceLayer.Data.Contracts
 {
     public interface IUserService
     {
+        Task<IEnumerable<UsersBooksLikes>> GetUserLikedBooks(User user);
+
         IQueryable<Book> GetUserBooks(User user);
 
         IQueryable<Book> PagedUserBooks(User user, string sortOrder, string currentFilter, string searchString, int? page = 1);

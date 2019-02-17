@@ -19,6 +19,19 @@ namespace BookSystem.ServiceLayer.Data.Services
             _context = context;
         }
 
+
+        public async Task<IEnumerable<UsersBooksLikes>> GetUserLikedBooks(User user)
+        {
+            var userId = user.Id;
+            var userLikedBooks = await _context.UsersBooksLikes
+                .Include(ubl => ubl.Book)
+                .Where(ubl => ubl.User == user)
+                .ToListAsync();
+
+            return userLikedBooks;
+        }
+
+
         public IQueryable<Book> GetUserBooks(User user)
         {
             var userBooks = from b in _context.UsersBooks

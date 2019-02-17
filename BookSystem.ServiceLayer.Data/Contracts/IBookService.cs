@@ -13,5 +13,7 @@ namespace BookSystem.ServiceLayer.Data.Contracts
         Task<Book> GetById(User user, int bookId);
 
         Task<UsersBooksLikes> LikeBook(int bookId, User user);
+
+        Task<UsersBooksLikes> DislikeBook(int bookId, User user);
     }
 }

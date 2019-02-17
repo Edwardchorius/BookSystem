@@ -16,6 +16,14 @@ namespace BookSystem.Models.ManageViewModels
             
         }
 
-        
+        public IndexViewModel(PaginatedList<Book> paginatedBooks, IEnumerable<UsersBooksLikes> userLikedBooks)
+        {
+            this.UserLikedBooks = userLikedBooks;
+            this.PaginatedBooks = paginatedBooks;
+        }
+
+        public IEnumerable<UsersBooksLikes> UserLikedBooks { get; set; }
+
+        public PaginatedList<Book> PaginatedBooks { get; set; }
     }
 }

@@ -86,13 +86,24 @@ namespace BookSystem.ServiceLayer.Data.Services
 
         public async Task<UsersBooksLikes> LikeBook(int bookId, User user)
         {
-
             var userId = user.Id;
-            var userBook = await _context.UsersBooks.Where(ub => ub.BookId == bookId && ub.User == user).FirstOrDefaultAsync();
+            var userBook = await _context.UsersBooks
+                .Include(ub => ub.Book)
+                .Include(ub => ub.User)
+                .Where(ub => ub.BookId == bookId && ub.User == user).FirstOrDefaultAsync();
 
             if (bookId == 0 || user == null || userBook == null)
             {
                 throw new EntityNotFoundException("Could not retrieve current book/user");
+            }
+
+            var doesExist = await _context.UsersBooksLikes
+                .Where(ubl => ubl.Book == userBook.Book && ubl.User == user)
+                .FirstOrDefaultAsync();
+
+            if (doesExist != null && doesExist.IsDeleted == false)
+            {
+                throw new EntityAlreadyExistsException("User has already liked this book");
             }
 
             var likedBook = new UsersBooksLikes
@@ -105,6 +116,36 @@ namespace BookSystem.ServiceLayer.Data.Services
             await _context.SaveChangesAsync();
 
             return likedBook;
+        }
+
+        public async Task<UsersBooksLikes> DislikeBook(int bookId, User user)
+        {
+            var userId = user.Id;
+            var userBook = await _context.UsersBooks
+                .Include(ub => ub.Book)
+                .Include(ub => ub.User)
+                .Where(ub => ub.BookId == bookId && ub.User == user).FirstOrDefaultAsync();
+
+            if (bookId == 0 || user == null || userBook == null)
+            {
+                throw new EntityNotFoundException("Could not retrieve current book/user");
+            }
+
+            var doesExist = await _context.UsersBooksLikes
+                .Where(ubl => ubl.Book == userBook.Book && ubl.User == user)
+                .FirstOrDefaultAsync();
+
+            if (doesExist == null)
+            {
+                throw new EntityNotFoundException("Current book to dislike not found");
+            }
+
+            doesExist.IsDeleted = true;
+
+            _context.UsersBooksLikes.Update(doesExist);
+            await _context.SaveChangesAsync();
+
+            return doesExist;
         }
     }
 }

@@ -85,7 +85,20 @@ namespace BookSystem.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var likedBook = await _bookService.LikeBook(bookId, user);
 
-            return RedirectToAction("Index", "Manage", new { id = bookId });
+            return RedirectToAction("Index", "Manage");
+        }
+
+        public async Task<IActionResult> DislikeBook(int bookId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var likedBook = await _bookService.DislikeBook(bookId, user);
+
+            return RedirectToAction("Index", "Manage");
         }
     }
 }
