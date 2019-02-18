@@ -22,13 +22,24 @@ namespace BookSystem.ServiceLayer.Data.Services
 
         public async Task<IEnumerable<UsersBooksLikes>> GetUserLikedBooks(User user)
         {
-            var userId = user.Id;
-            var userLikedBooks = await _context.UsersBooksLikes
-                .Include(ubl => ubl.Book)
-                .Where(ubl => ubl.User == user)
-                .ToListAsync();
+            try
+            {
+                var userId = user.Id;
+                var userLikedBooks = await _context.UsersBooksLikes
+                    .Include(ubl => ubl.Book)
+                    .Where(ubl => ubl.User == user)
+                    .ToListAsync();
 
-            return userLikedBooks;
+                return userLikedBooks;
+            }
+            catch (EntityNotFoundException ex)
+            {
+                throw new EntityNotFoundException("Current user was not found", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong...", ex);
+            }
         }
 
 

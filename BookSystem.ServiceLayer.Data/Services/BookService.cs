@@ -108,7 +108,7 @@ namespace BookSystem.ServiceLayer.Data.Services
 
 
             if (doesExist == null)
-            {
+            {           
                 var likedBook = new UsersBooksLikes
                 {
                     BookId = bookId,
