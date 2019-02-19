@@ -66,13 +66,13 @@ namespace BookSystem.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("MakeReview?bookId="+ Id, "Book");
+                return RedirectToAction("MakeReview", "Book");
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var addReview = await _reviewService.MakeReview(user, Id, model.Content);
 
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction("Index", "Manage", new { Id});
         }       
         
 
@@ -85,7 +85,7 @@ namespace BookSystem.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var likedBook = await _bookService.LikeBook(bookId, user);
 
-            return RedirectToAction("Index", "Manage");
+            return RedirectToAction("Index", "Manage", new {likedBook.Book });
         }
 
         public async Task<IActionResult> DislikeBook(int bookId)

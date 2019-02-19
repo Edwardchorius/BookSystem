@@ -6,7 +6,7 @@
 
 <h2>Make Review on @Model.Book.Title</h2>
 
-<form asp-controller="Book" asp-action="MakeReview" asp-route-Id="@Model.Book.Id">
+<form asp-controller="Book" asp-action="MakeReview" asp-route-Id="@Model.Book.Id" id="review-form">
     @Html.AntiForgeryToken()
     <div class="form-group">
         <textarea name="content" class="form-control" rows="5" id="textarea"></textarea>
