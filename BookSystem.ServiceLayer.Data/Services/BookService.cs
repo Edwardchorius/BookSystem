@@ -154,6 +154,7 @@ namespace BookSystem.ServiceLayer.Data.Services
             }
 
             doesExist.IsDeleted = true;
+            doesExist.DeletedOn = DateTime.Now;
 
             _context.UsersBooksLikes.Update(doesExist);
             await _context.SaveChangesAsync();

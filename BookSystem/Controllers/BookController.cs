@@ -66,7 +66,7 @@ namespace BookSystem.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("MakeReview", "Book");
+                return RedirectToAction("MakeReview?bookId="+ Id, "Book");
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);

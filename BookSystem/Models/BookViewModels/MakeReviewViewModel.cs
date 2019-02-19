@@ -21,6 +21,8 @@ namespace BookSystem.Models.BookViewModels
         public User Author { get; set; }
 
         [Required]
+        [DataType(DataType.Text)]
+        [MinLength(20)]
         public string Content { get; set; }
     }
 }
