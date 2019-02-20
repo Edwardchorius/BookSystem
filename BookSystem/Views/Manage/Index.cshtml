@@ -53,16 +53,19 @@
                     <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id" class="btn btn-success">Add Review</a>
                 </td>
                 <td>
-                    @if (!(Model.UserLikedBooks.Where(ulb => ulb.IsDeleted == false).Select(ulb => ulb.BookId)).Contains(item.Id))
-                    {
-                        <a asp-controller="Book" asp-action="LikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Like Book</a>
-                    }else
-                    { 
-                        <a asp-controller="Book" asp-action="DislikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Dislike Book</a>
-                    }  
+                    <div id="buttons-div">
+                        @if (!(Model.UserLikedBooks.Where(ulb => ulb.IsDeleted == false).Select(ulb => ulb.BookId)).Contains(item.Id))
+                        {
+                            <a asp-controller="Book" asp-action="LikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Like Book</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Book" asp-action="DislikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Dislike Book</a>
+                        }
+                    </div>
                 </td>
             </tr>
-        }       
+        }
     </tbody>
 </table>
 
@@ -100,5 +103,5 @@
 </a>
 
 @section Scripts{
-
+<script src="~/js/likebutton.js"></script>
 }

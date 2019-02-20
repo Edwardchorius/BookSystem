@@ -21,6 +21,8 @@ $(function () {
 
         $.post($reviewForm.attr('action'), dataToSend, function () {
             $('#textarea').val("")
-        });
+            const $successmsg = $('<p>Review submited successfully!</p>');
+            $successmsg.appendTo('#review-form').fadeOut(3000);
+        });  
     });
 });
