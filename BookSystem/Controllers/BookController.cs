@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookSystem.Data.Models;
 using BookSystem.Models.BookViewModels;
+using BookSystem.Models.ManageViewModels;
 using BookSystem.ServiceLayer.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -73,8 +74,8 @@ namespace BookSystem.Controllers
             var addReview = await _reviewService.MakeReview(user, Id, model.Content);
 
             return RedirectToAction("Index", "Manage", new { });
-        }       
-        
+        }
+
 
         public async Task<IActionResult> LikeBook(int bookId)
         {
@@ -85,7 +86,7 @@ namespace BookSystem.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var likedBook = await _bookService.LikeBook(bookId, user);
 
-            return RedirectToAction("Index", "Manage", new {bookId });
+            return RedirectToAction("Index", "Manage");
         }
 
         public async Task<IActionResult> DislikeBook(int bookId)
@@ -98,7 +99,7 @@ namespace BookSystem.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var likedBook = await _bookService.DislikeBook(bookId, user);
 
-            return RedirectToAction("Index", "Manage", new { bookId });
+            return RedirectToAction("Index", "Manage");
         }
     }
 }

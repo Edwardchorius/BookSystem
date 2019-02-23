@@ -19,6 +19,7 @@
     </div>
 </form>
 
+
 <table class="table">
     <thead>
         <tr>
@@ -53,21 +54,20 @@
                     <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id" class="btn btn-success">Add Review</a>
                 </td>
                 <td>
-                    <div id="buttons-div">
-                        @if (!(Model.UserLikedBooks.Where(ulb => ulb.IsDeleted == false).Select(ulb => ulb.BookId)).Contains(item.Id))
-                        {
-                            <a asp-controller="Book" asp-action="LikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Like Book</a>
-                        }
-                        else
-                        {
-                            <a asp-controller="Book" asp-action="DislikeBook" asp-route-bookId="@item.Id" class="btn btn-success">Dislike Book</a>
-                        }
-                    </div>
+                    @if (!(Model.UserLikedBooks.Where(ulb => ulb.IsDeleted == false).Select(ulb => ulb.BookId)).Contains(item.Id))
+                    {
+                      <a asp-controller="Book" asp-action="LikeBook" asp-route-bookId="@item.Id" name="like-button" class="btn btn-success">Like Book</a>
+                    }
+                    else
+                    {
+                     <a  asp-controller="Book" asp-action="DislikeBook" asp-route-bookId="@item.Id" name="dislike-button" class="btn btn-success">Dislike Book</a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 
 @{
     var prevDisabled = !Model.PaginatedBooks.HasPreviousPage ? "disabled" : "";
@@ -103,5 +103,4 @@
 </a>
 
 @section Scripts{
-<script src="~/js/likebutton.js"></script>
 }
