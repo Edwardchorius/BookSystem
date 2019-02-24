@@ -4,12 +4,9 @@ using BookSystem.ServiceLayer.Data.Contracts;
 using BookSystem.ServiceLayer.Data.DTO;
 using BookSystem.ServiceLayer.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BookSystem.ServiceLayer.Data.Services

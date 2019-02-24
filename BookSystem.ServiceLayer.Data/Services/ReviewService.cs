@@ -29,7 +29,6 @@ namespace BookSystem.ServiceLayer.Data.Services
                     throw new EntityNotFoundException("User not found");
                 }
 
-
                 if (await _context.Books.FirstOrDefaultAsync(b => b.Id == bookId) == null)
                 {
                     throw new EntityNotFoundException("Book to review not found");
@@ -45,7 +44,7 @@ namespace BookSystem.ServiceLayer.Data.Services
                     CreatedOn = DateTime.Now
                 };
 
-                reviewToMake.Ratings.Add(author.UserName, 0);
+
 
                 await _context.Reviews.AddAsync(reviewToMake);
                 await _context.SaveChangesAsync();

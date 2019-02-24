@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BookSystem.Models;
 using BookSystem.ServiceLayer.Data.Contracts;
 using BookSystem.Models.HomeViewModels;
 
+
 namespace BookSystem.Controllers
 {
     public class HomeController : Controller
     {
+
         private IBookService _bookService;
 
         public HomeController(IBookService bookService)
