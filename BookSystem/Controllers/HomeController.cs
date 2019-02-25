@@ -19,7 +19,7 @@ namespace BookSystem.Controllers
             _bookService = bookService;
         }
 
-        
+        [HttpGet]
         public async Task<IActionResult> Index(string sortOrder, string searchByTitle)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -28,7 +28,7 @@ namespace BookSystem.Controllers
 
             var topBooks = await _bookService.GetTopBooks(sortOrder, searchByTitle);
             var model = new TopBooksViewModel(topBooks);
-
+            
             return View(model);
         }
 

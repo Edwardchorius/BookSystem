@@ -1,0 +1,48 @@
+﻿@using BookSystem.Models.HomeViewModels
+@model TopBooksViewModel
+
+<div id="data">
+    <form asp-controller="Home" asp-action="Index" method="get" id="top-books-form">
+        <div class="form-actions no-color">
+            <span>
+                Search by keyword/s: <input type="text" name="searchByTitle" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" />
+            </span>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Title</a>
+                </th>
+                <th>
+                    Genre
+                </th>
+                <th>
+                    Rating
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.TopBooks)
+            {
+                <tr>
+                    <td>
+                        @book.Title
+                    </td>
+                    <td>
+                        @book.Genre
+                    </td>
+                    <td>
+                        @book.TotalRating
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts{
+    <script src="~/js/topbooks.js"></script>
+}
