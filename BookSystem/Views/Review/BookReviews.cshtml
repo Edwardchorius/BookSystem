@@ -1,0 +1,21 @@
+﻿@using BookSystem.Models.ReviewViewModels
+@model BookReviewsViewModel
+
+@{
+    ViewData["Title"] = "BookReviews";
+}
+
+<h4>BookReviews for @Model.Title</h4>
+
+
+<div id="reviews-section">
+    @if (Model.BookReviews.Count() != 0)
+    {
+        foreach (var review in Model.BookReviews)
+        {
+            @await Html.PartialAsync("_BookReviewsPartial", review)
+        }
+    }
+</div>
+
+

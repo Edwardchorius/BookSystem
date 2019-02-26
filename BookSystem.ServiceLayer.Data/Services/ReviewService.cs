@@ -1,6 +1,7 @@
 ﻿using BookSystem.Data;
 using BookSystem.Data.Models;
 using BookSystem.ServiceLayer.Data.Contracts;
+using BookSystem.ServiceLayer.Data.DTO;
 using BookSystem.ServiceLayer.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -54,6 +55,43 @@ namespace BookSystem.ServiceLayer.Data.Services
             catch (EntityNotFoundException ex)
             {
                 throw new EntityNotFoundException("Book/User not found", ex);
+            }
+        }
+
+        public async Task<IEnumerable<ReviewDTO>> GetBookReviews(int bookId)
+        {
+            try
+            {
+                var bookReviews = _context
+                .Reviews
+                .Where(r => r.BookId == bookId)
+                .AsQueryable();
+
+                if (bookReviews.Count() == 0)
+                {
+                    throw new EntityNotFoundException("Could not find any existing book reviews");
+                }
+
+                var result = await bookReviews
+                    .Select(review => new ReviewDTO()
+                    {
+                        Author = review.Author,
+                        AuthorId = review.AuthorId,
+                        Book = review.Book,
+                        Title = review.Book.Title,
+                        ReviewText = review.ReviewText
+                    })
+                    .ToListAsync();
+
+                return result;
+            }
+            catch (EntityNotFoundException ex)
+            {
+                throw new EntityNotFoundException("Could not retrieve book reviews", ex);
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new NullReferenceException("Could not load null data", ex);
             }
         }
     }

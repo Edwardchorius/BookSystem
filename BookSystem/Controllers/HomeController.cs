@@ -32,6 +32,8 @@ namespace BookSystem.Controllers
             return View(model);
         }
 
+        //Second Action that returns partial
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

@@ -51,30 +51,7 @@ namespace BookSystem.Controllers
             return RedirectToAction("Index", "Manage");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> MakeReview(int bookId)
-        {
-            var user =  await _userManager.GetUserAsync(HttpContext.User);
-            var book = await _bookService.GetById(user, bookId);
-            var model = new MakeReviewViewModel(user, book);
-            
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MakeReview(int Id, MakeReviewViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("MakeReview", "Book");
-            }
-
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var addReview = await _reviewService.MakeReview(user, Id, model.Content);
-
-            return RedirectToAction("Index", "Manage", new { });
-        }
+        
 
 
         public async Task<IActionResult> LikeBook(int bookId)

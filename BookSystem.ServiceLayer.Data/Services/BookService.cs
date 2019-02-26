@@ -26,12 +26,9 @@ namespace BookSystem.ServiceLayer.Data.Services
             {
                 var books = _context
                 .Reviews
-                .Include(r => r.Book)
-                .Include(r => r.Ratings)
-                .OrderBy(r => r.Ratings.Values.Sum())
+                .OrderBy(r => r.Ratings.Values.Sum() / 2)
                 .Select(r => r.Book)
                 .Distinct()
-                .Include(b => b.Reviews)
                 .Take(10)
                 .AsQueryable();
 
@@ -59,10 +56,11 @@ namespace BookSystem.ServiceLayer.Data.Services
                 var result = await books
                     .Select(book => new BookDTO()
                     {
+                        BookId = book.Id,
                         Title = book.Title,
                         Genre = book.Genre,
                         TotalRating = book.Reviews.Select
-                        (r => r.Ratings.Values.Sum()) == null ? 0 : book.Reviews.Select(r => r.Ratings.Values.Sum()).Sum()
+                        (r => r.Ratings.Values.Sum() / books.Count()) == null ? 0 : book.Reviews.Select(r => r.Ratings.Values.Sum()).Sum() / books.Count()
                     })
                     .ToListAsync();
 

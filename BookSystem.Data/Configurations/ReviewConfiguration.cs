@@ -17,6 +17,14 @@ namespace BookSystem.Data.Configurations
                 .HasForeignKey(review => review.ReviewId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(review => review.Book)
+                .WithMany(book => book.Reviews)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(review => review.Author)
+                .WithMany(author => author.Reviews)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(r => r.Ratings)
                 .HasConversion(
                 v => JsonConvert.SerializeObject(v),

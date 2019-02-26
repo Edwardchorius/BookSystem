@@ -51,7 +51,7 @@
                     @item.CreatedOn
                 </td>
                 <td>
-                    <a asp-controller="Book" asp-action="MakeReview" asp-route-bookId="@item.Id" class="btn btn-success">Add Review</a>
+                    <a asp-controller="Review" asp-action="MakeReview" asp-route-bookId="@item.Id" method="get" class="btn btn-success">Add Review</a>
                 </td>
                 <td>
                     @if (!(Model.UserLikedBooks.Where(ulb => ulb.IsDeleted == false).Select(ulb => ulb.BookId)).Contains(item.Id))

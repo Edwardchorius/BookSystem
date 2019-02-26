@@ -1,0 +1,14 @@
+﻿@using BookSystem.ServiceLayer.Data.DTO
+@model ReviewDTO
+
+<div class="clearfix">
+    <div class="pull-left">
+        <h1>
+            Review on @Model.Title by
+            <strong>
+                @Model.Author.UserName
+            </strong>
+        </h1>
+        <p>@Model.ReviewText</p>
+    </div>
+</div>
