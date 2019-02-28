@@ -26,11 +26,10 @@ namespace BookSystem.ServiceLayer.Data.Services
             {
                 var books = _context
                 .Reviews
-                .OrderBy(r => r.Ratings.Values.Sum() / 2)
                 .Select(r => r.Book)
                 .Distinct()
-                .Take(10)
                 .AsQueryable();
+
 
                 if (books.Count() == 0)
                 {
@@ -43,33 +42,36 @@ namespace BookSystem.ServiceLayer.Data.Services
                 }
 
 
-                if (sortOrder != null && !sortOrder.Contains("_desc"))
+                if (sortOrder != null && sortOrder.Contains("_desc"))
                 {
                     books = books.OrderBy(book => book);
                 }
                 else
                 {
-                    books = books.OrderByDescending(book => book);
+                    books = books.OrderByDescending(book => book.Reviews.Count);
                 }
 
 
                 var result = await books
-                    .Select(book => new BookDTO()
-                    {
-                        BookId = book.Id,
-                        Title = book.Title,
-                        Genre = book.Genre,
-                        TotalRating = book.Reviews.Select
-                        (r => r.Ratings.Values.Sum() / books.Count()) == null ? 0 : book.Reviews.Select(r => r.Ratings.Values.Sum()).Sum() / books.Count()
-                    })
-                    .ToListAsync();
+                .Select(
+                book => new BookDTO()
+                {
+                    BookId = book.Id,
+                    Title = book.Title,
+                    Genre = book.Genre,
+                    TotalRating = book.Reviews.Select
+                    (r => r.Ratings.Values.Sum() / r.Ratings.Values.Count).Sum() / book.Reviews.Count()
+                })
+                .ToListAsync();
+
 
                 return result;
             }
+
             catch (EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException("Could not load top books!",ex);
-            }         
+                throw new EntityNotFoundException("Could not load top books!", ex);
+            }
         }
 
         public async Task<Book> GetById(User user, int id)
@@ -160,7 +162,7 @@ namespace BookSystem.ServiceLayer.Data.Services
 
 
             if (doesExist == null)
-            {           
+            {
                 var likedBook = new UsersBooksLikes
                 {
                     BookId = bookId,
@@ -173,7 +175,7 @@ namespace BookSystem.ServiceLayer.Data.Services
                 return likedBook;
             }
 
-            else 
+            else
             {
                 doesExist.IsDeleted = false;
                 _context.UsersBooksLikes.Update(doesExist);

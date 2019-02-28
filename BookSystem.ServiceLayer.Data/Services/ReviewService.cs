@@ -45,7 +45,7 @@ namespace BookSystem.ServiceLayer.Data.Services
                     CreatedOn = DateTime.Now
                 };
 
-
+                reviewToMake.Ratings.Add("Copyright", 1);
 
                 await _context.Reviews.AddAsync(reviewToMake);
                 await _context.SaveChangesAsync();
@@ -58,12 +58,23 @@ namespace BookSystem.ServiceLayer.Data.Services
             }
         }
 
+        public async Task<Review> GetReview(int reviewId)
+        {
+            var review = await _context.Reviews
+                .Where(r => r.Id == reviewId)
+                .FirstOrDefaultAsync();
+
+            return review;
+        }
+
         public async Task<IEnumerable<ReviewDTO>> GetBookReviews(int bookId)
         {
             try
             {
                 var bookReviews = _context
                 .Reviews
+                .Include(r => r.Comments)
+                .ThenInclude(c => c.Author)
                 .Where(r => r.BookId == bookId)
                 .AsQueryable();
 
@@ -77,9 +88,11 @@ namespace BookSystem.ServiceLayer.Data.Services
                     {
                         Author = review.Author,
                         AuthorId = review.AuthorId,
+                        ReviewId = review.Id,
                         Book = review.Book,
                         Title = review.Book.Title,
-                        ReviewText = review.ReviewText
+                        ReviewText = review.ReviewText,
+                        Comments = review.Comments
                     })
                     .ToListAsync();
 

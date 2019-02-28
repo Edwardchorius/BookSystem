@@ -1,6 +1,8 @@
 ﻿@using BookSystem.ServiceLayer.Data.DTO
 @model ReviewDTO
 
+
+
 <div class="clearfix">
     <div class="pull-left">
         <h1>
@@ -8,7 +10,13 @@
             <strong>
                 @Model.Author.UserName
             </strong>
-        </h1>
+        </h1>       
+
         <p>@Model.ReviewText</p>
     </div>
 </div>
+
+
+@section Scripts{
+
+}

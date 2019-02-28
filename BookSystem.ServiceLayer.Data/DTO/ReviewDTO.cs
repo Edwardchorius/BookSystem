@@ -1,6 +1,7 @@
 ﻿using BookSystem.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BookSystem.ServiceLayer.Data.DTO
@@ -19,6 +20,8 @@ namespace BookSystem.ServiceLayer.Data.DTO
             this.Book = review.Book;
             this.Title = review.Book.Title;
             this.ReviewText = review.ReviewText;
+            this.ReviewId = review.Id;
+            this.Comments = review.Comments;
         }
 
         public User Author { get; set; }
@@ -29,6 +32,10 @@ namespace BookSystem.ServiceLayer.Data.DTO
 
         public string Title { get; set; }
 
+        public int ReviewId { get; set; }
+
         public string ReviewText { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

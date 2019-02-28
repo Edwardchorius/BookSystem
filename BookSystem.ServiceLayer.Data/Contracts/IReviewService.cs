@@ -11,6 +11,8 @@ namespace BookSystem.ServiceLayer.Data.Contracts
     {
         Task<Review> MakeReview(User author, int bookId, string reviewText);
 
+        Task<Review> GetReview(int reviewId);
+
         Task<IEnumerable<ReviewDTO>> GetBookReviews(int bookId);
     }
 }

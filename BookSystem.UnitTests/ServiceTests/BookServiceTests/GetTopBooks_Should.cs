@@ -64,6 +64,8 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 Ratings = new Dictionary<string, int>()
             };
 
+            bookReview.Ratings.Add("Copyright", 1);
+
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
             {
@@ -137,6 +139,8 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 Ratings = new Dictionary<string, int>()
             };
 
+            bookReview.Ratings.Add("Copyright", 1);
+
             Review bookReviewTwo = new Review
             {
                 Book = new Book
@@ -149,6 +153,8 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 Comments = new List<Comment>(),
                 Ratings = new Dictionary<string, int>()
             };
+
+            bookReviewTwo.Ratings.Add("Copyright", 1);
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))
@@ -166,7 +172,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 var bookDTOCollection = await sut.GetTopBooks(sortOrder);
                 Assert.IsInstanceOfType(bookDTOCollection, typeof(IEnumerable<BookDTO>));
                 Assert.IsTrue(bookDTOCollection.Count() == 2);
-                Assert.IsTrue(bookDTOCollection.First().Title == bookReviewTwo.Book.Title);
+                Assert.IsTrue(bookDTOCollection.First().Title == bookReview.Book.Title);
             }
         }
 
@@ -206,6 +212,8 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 Ratings = new Dictionary<string, int>()
             };
 
+            bookReview.Ratings.Add("Copyright", 1);
+
             Review bookReviewTwo = new Review
             {
                 Book = new Book
@@ -219,6 +227,7 @@ namespace BookSystem.UnitTests.ServiceTests.BookServiceTests
                 Ratings = new Dictionary<string, int>()
             };
 
+            bookReviewTwo.Ratings.Add("Copyright", 1);
 
             //Act
             using (var actContext = new BookSystemDbContext(contextOptions))

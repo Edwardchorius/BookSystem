@@ -9,13 +9,39 @@
 
 
 <div id="reviews-section">
-    @if (Model.BookReviews.Count() != 0)
+    @if (Model.BookReviews.Count() != 0 && User.Identity.IsAuthenticated)
     {
         foreach (var review in Model.BookReviews)
         {
             @await Html.PartialAsync("_BookReviewsPartial", review)
+
+            <form id="comment-form" asp-action="Comment" asp-controller="Review" asp-route-reviewId="@review.ReviewId" method="post">
+                <div class="form-group">
+                    <label></label>
+                    <textarea name="content" class="form-control" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+
+            <div class="container">
+                @foreach (var comment in Model.Comments.Where(c => c.ReviewId == review.ReviewId && Model.Comments.Count() != 0))
+                {
+                    <span>By @comment.Author.UserName</span>
+                    <div class="comment-body">
+                        <strong>@comment.Content</strong>
+                    </div>
+                }
+            </div>
+            
         }
+    }
+    else
+    {
+        <h2>Please, log in to add reviews and look up reviews for other books.</h2>
     }
 </div>
 
+@section Scripts{ 
+
+}
 

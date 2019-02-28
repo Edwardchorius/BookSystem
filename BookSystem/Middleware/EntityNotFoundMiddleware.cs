@@ -47,11 +47,11 @@ namespace BookSystem.Middleware
             {
                 context.Response.Redirect("/404");
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
                 context.Response.Redirect("/404");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 context.Response.Redirect("/404");
             }
