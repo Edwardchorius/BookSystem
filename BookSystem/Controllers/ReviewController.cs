@@ -75,7 +75,7 @@ namespace BookSystem.Controllers
             var newComment = await _commentService.PostComment(reviewId, model.Content, user);
             var review = await _reviewService.GetReview(reviewId);
 
-            return RedirectToAction("BookReviews", "Review", new { newComment.Review.BookId });
+            return RedirectToAction("BookReviews", "Review", new { review.BookId });
         }
     }
 }

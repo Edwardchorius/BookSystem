@@ -71,19 +71,17 @@ namespace BookSystem.ServiceLayer.Data.Services
         {
             try
             {
-                var bookReviews = _context
+                var bookReviews = await _context
                 .Reviews
+                .Include(r => r.Book)
                 .Include(r => r.Comments)
                 .ThenInclude(c => c.Author)
                 .Where(r => r.BookId == bookId)
-                .AsQueryable();
+                .ToListAsync();
 
-                if (bookReviews.Count() == 0)
-                {
-                    throw new EntityNotFoundException("Could not find any existing book reviews");
-                }
 
-                var result = await bookReviews
+
+                var result = bookReviews
                     .Select(review => new ReviewDTO()
                     {
                         Author = review.Author,
@@ -93,8 +91,12 @@ namespace BookSystem.ServiceLayer.Data.Services
                         Title = review.Book.Title,
                         ReviewText = review.ReviewText,
                         Comments = review.Comments
-                    })
-                    .ToListAsync();
+                    });
+
+                if (!result.Any())
+                {
+                    throw new EntityNotFoundException("Could not find any existing book reviews");
+                }
 
                 return result;
             }
